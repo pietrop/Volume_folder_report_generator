@@ -18,7 +18,6 @@
   <br>
   <div class="container-fluid">
 
-
     <div class="form-group">
       <label for="exampleInputFile">Select Volume Folder</label>
       <input id="fileDialog" type="file" nwdirectory />
@@ -49,6 +48,7 @@
   var fs = require('fs');
 
   var report ="";
+
   /**
   * Load file path
   */
@@ -88,12 +88,9 @@
   */
   //when clicking `btnGenerateReport`, take file path var, pass it to ruby script
   document.getElementById('btnGenerateReport').addEventListener("click", function(){
-    // alert("Report has been saved on the desktop");
-    // updateVolumeFolderName(path);
-    // updatePreview(path);
+
     document.getElementById('filePathPreview').value = path;
 
-    //TODO: change ruby script so that input of script is command line argument, file path.
     generateReport(path);
 
   });
@@ -101,17 +98,15 @@
 
   document.getElementById('saveFileBtn').addEventListener("click",function(){
 
-
     chooseFile('#saveFile', function(filePathName){
       fs.writeFileSync(filePathName, report)
       alert("Report has been saved")
     });
 
-
   })
 
   /**
-  * Helper functions
+  * Helper functions to triggere file/folder input and return path/result of selection.
   */
   function chooseFile(name,cb) {
     var chooser = document.querySelector(name);
@@ -122,7 +117,6 @@
 
     chooser.click();
   }
-
 
 
   function updateVolumeFolderName(fp){
@@ -145,8 +139,6 @@
     document.getElementById('saveFileBtn').disabled = bool;
   }
 
-
-
   /**
   * Generate report on desktop
   * takes in a path string
@@ -154,17 +146,6 @@
   */
   function generateReport(path){
     var exec = require('child_process').exec;
-
-    // var file = './main.rb';
-    // var args = [path];
-    // var options = {};
-    // var execFile = require('child_process').execFile;
-    // exexFile(file, args, options, function(error, stdout, stderr) {
-    //   // command output is in stdout
-    //   console.log(stdout)
-    // });
-    //
-    // var exec = require('child_process').exec
 
     exec('./main.rb'+' '+path, function (error, stdout, stderr) {
       console.log('stdout: ' + stdout);
