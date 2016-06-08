@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Volume folder report generator</title>
+  <link rel="stylesheet" href="public/css/bootstrap.css"></link>
+  <style media="screen">
+  html, body {
+    height: 100%;
+  }
+  textarea#textArea {
+    width: 100%;
+    height: 100%;
+  }
+  </style>
+</head>
+<body>
+  <br>
+  <div class="container-fluid">
+
+
+    <div class="form-group">
+      <label for="exampleInputFile">Select Volume Folder</label>
+      <input id="fileDialog" type="file" nwdirectory />
+      <p class="help-block">Select the folder on the video server that contains the project folders.</p>
+    </div>
+    <!-- To set volume folder file path -->
+    <div class="form-group">
+      <!-- <label for="exampleInputPassword1">Volume Folder Path</label> -->
+      <input type="text" id="filePathPreview" class="form-control" disabled>
+    </div>
+    <!-- generate report btn -->
+    <button type="button"  id="btnGenerateReport" class="btn btn-default">Generate Report</button>
+    <!-- save report btn -->
+    <button type="button"  id="saveFileBtn" class="btn btn-default">Save Report</button>
+
+    <!-- for displaying report when ready  -->
+    <div class="form-group">
+      <label for="comment">Report:</label>
+      <textarea id="textArea" class="form-control" rows="18" id="comment"></textarea>
+    </div>
+    <!-- For saving report file -->
+    <input type="file" id="saveFile" style="display:none;" nwsaveas />
+
+  </div>
+
+  <script type="text/javascript">
+  require('nwjs-osx-menu')(window);
+  var fs = require('fs');
+
+  var report ="";
+  /**
+  * Load file path
+  */
+  var pathFileNameJson = './volume.json';
+  //When it starts load path from `./Volume.txt` file and add it to `filePathPreview`.
+  var path = require(pathFileNameJson).path
+  updatePreview(path);
+  //if file path == / => grey out btnGenerateReport button.
+  if(path == "/"){
+    disableReportBtn(true);
+  }else {
+    disableReportBtn(false);
+  }
+
+  /**
+  * File dialogue listener
+  */
+  //when selecting a file `fileDialog` save file path in variable,
+  document.getElementById('fileDialog').addEventListener("change", function(evt) {
+    var pathFolder = this.value;
+    path = pathFolder;
+    updateVolumeFolderName(pathFolder);
+    updatePreview(pathFolder);
+    //ie if click cancel, or select root folder.
+
+    if(pathFolder == "/" ){
+      disableReportBtn(true);
+    }else{
+      disableReportBtn(false);
+    }
+
+  }, false);
+
+
+  /**
+  * Generate report listener
+  */
+  //when clicking `btnGenerateReport`, take file path var, pass it to ruby script
+  document.getElementById('btnGenerateReport').addEventListener("click", function(){
+    // alert("Report has been saved on the desktop");
+    // updateVolumeFolderName(path);
+    // updatePreview(path);
+    document.getElementById('filePathPreview').value = path;
+
+    //TODO: change ruby script so that input of script is command line argument, file path.
+    generateReport(path);
+
+  });
+
+
+  document.getElementById('saveFileBtn').addEventListener("click",function(){
+
+
+    chooseFile('#saveFile', function(filePathName){
+      fs.writeFileSync(filePathName, report)
+      alert("Report has been saved")
+    });
+
+
+  })
+
+  /**
+  * Helper functions
+  */
+  function chooseFile(name,cb) {
+    var chooser = document.querySelector(name);
+    chooser.addEventListener("change", function(evt) {
+      console.log(this.value);
+      if(cb){cb(this.value)}
+    }, false);
+
+    chooser.click();
+  }
+
+
+
+  function updateVolumeFolderName(fp){
+    //update var path updated
+    path = fp;
+    //update local storage json saved
+    fs.writeFile(pathFileNameJson, JSON.stringify({"path": fp}), function (err) {
+      if (err) return console.log(err);
+      console.log('written file');
+    });
+  }
+
+  function updatePreview(f){
+    //update preview
+    document.getElementById('filePathPreview').value = f;
+  }
+
+  function disableReportBtn(bool){
+    document.getElementById('btnGenerateReport').disabled = bool;
+    document.getElementById('saveFileBtn').disabled = bool;
+  }
+
+
+
+  /**
+  * Generate report on desktop
+  * takes in a path string
+  * run ruby code that generates report on desktop.
+  */
+  function generateReport(path){
+    var exec = require('child_process').exec;
+
+    // var file = './main.rb';
+    // var args = [path];
+    // var options = {};
+    // var execFile = require('child_process').execFile;
+    // exexFile(file, args, options, function(error, stdout, stderr) {
+    //   // command output is in stdout
+    //   console.log(stdout)
+    // });
+    //
+    // var exec = require('child_process').exec
+
+    exec('./main.rb'+' '+path, function (error, stdout, stderr) {
+      console.log('stdout: ' + stdout);
+      console.log('stderr: ' + stderr);
+      console.log('error: ' + error);
+      report = ""+stdout.trim();
+      document.getElementById('textArea').value = ""+stdout.trim();
+    });
+
+  }
+
+  </script>
+</body>
+</html>

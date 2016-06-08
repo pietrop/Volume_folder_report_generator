@@ -1,0 +1,19 @@
+{
+  "name": "nwjs_volume_report_generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "window": {
+    "show": true,
+    "width": 600,
+    "height": 600,
+    "toolbar": false,
+    "icon": "clip.icns"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "nw"
+  },
+  "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
+  "license": "ISC"
+}
