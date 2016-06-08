@@ -21,6 +21,18 @@ See `Volume_example` for a more comprehensive example folder structure.
              └── PROJECTS
 ```
 
+However the script is not opinionated about the inner folder structure of each project.
+As long the following structure of a "volume" folder containing projects folders is respected.
+
+```
+└── Volume
+       ├── SAMPLE_Project_1_folder
+       │   └── ...
+       └── SAMPLE_Project_1_folder
+             └── ...
+```
+
+
 When making a cue sheet (a document that declares what music is being used in a video for legal purposes) a lot of time is spent going through the folders on the server to figure out if there are project files or audio files missing.
 
 
