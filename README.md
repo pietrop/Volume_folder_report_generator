@@ -2,10 +2,10 @@
 
 ## Overview
 
-Video teams save projects on a server inside a `volume` folder organised in the following way.
+Video teams save projects on a server inside a `volume` folder organised as follows. 
 See `Volume_example` for a more comprehensive example folder structure.
 
-(The `.mp3`, `.wavs` and `.prproj` files in the example folder are not valid files, they just have those extensions)
+(The `.mp3`, `.wavs` and `.prproj` files in the example folder are not valid files; they just have those extensions).
 
 ```
 └── Volume
@@ -21,8 +21,7 @@ See `Volume_example` for a more comprehensive example folder structure.
              └── PROJECTS
 ```
 
-However the script is not opinionated about the inner folder structure of each project.
-As long the following structure of a "volume" folder containing projects folders is respected.
+However, the script is not opinionated about the inner folder structure of each project as long as the following structure of a "volume" folder containing projects folders is respected.
 
 ```
 └── Volume
@@ -33,8 +32,7 @@ As long the following structure of a "volume" folder containing projects folders
 ```
 
 
-When making a cue sheet (a document that declares what music is being used in a video for legal purposes) a lot of time is spent going through the folders on the server to figure out if there are project files or audio files missing.
-
+When making a cue sheet (a document that declares what music is used in a video for legal purposes), a lot of time is spent going through the folders on the server to figure out if there are project files or audio files missing.
 
 This app allows the user to set the path to the volume folder and generates a report on the desktop.
 
