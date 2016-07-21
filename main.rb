@@ -305,7 +305,7 @@ class Project
 
   class ProjectFile <FileElement
     #TODO: check if .aep should be after effects
-    @file_types =['.prproj','.ppj','.aep']
+    @file_types =['.prproj','.ppj']
 
   end
 end
