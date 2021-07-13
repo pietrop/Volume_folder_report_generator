@@ -1,0 +1,8 @@
+title: Volume foder report generator
+description: Os X nwjs app, tha runs a ruby script to generate a report for missing media files on a video server
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-minimal
+
+gems:
+  - jekyll-mentions
